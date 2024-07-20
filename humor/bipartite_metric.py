@@ -5,7 +5,7 @@ def bipartite_metric(model_answers: pd.DataFrame, ground_truth: pd.DataFrame):
     scores = model_answers.apply(
         lambda row_model: ground_truth.apply(
             lambda row_truth: 
-                fuzz.ratio(row_truth["sentence"], row_model["sentence"]) 
+                fuzz.partial_ratio(row_truth["sentence"], row_model["sentence"]) 
                 if row_model["comedian"] == row_truth["comedian"] 
                 else None,
         axis=1),
