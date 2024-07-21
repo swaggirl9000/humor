@@ -27,7 +27,7 @@ def bipartite_metric(model_answers: pd.DataFrame, ground_truth: pd.DataFrame):
     
     truths = scores[~scores['truth'].isin(df['truth'])]
     entries = truths.copy()
-    entries['score'] = 0
+    # entries['score'] = 0
     df = pd.concat([df, entries[['comedian', 'model', 'truth', 'score']]], ignore_index=True)
     df.sort_values(by=['comedian', 'model'], inplace=True)
     
