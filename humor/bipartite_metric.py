@@ -1,7 +1,8 @@
 import pandas as pd
 from thefuzz import fuzz
 
-def bipartite_metric(model_answers: pd.DataFrame, ground_truth: pd.DataFrame):    
+def bipartite_metric(model_answers: pd.DataFrame, ground_truth: pd.DataFrame):  
+    # Find the similarity of the model answers and ground truth by using fuzzy string matching
     score_matrix = model_answers.apply(
         lambda row_model: ground_truth.apply(
             lambda row_truth: 
@@ -13,12 +14,16 @@ def bipartite_metric(model_answers: pd.DataFrame, ground_truth: pd.DataFrame):
         .melt(ignore_index=False) \
         .dropna() \
         .reset_index()
-    
+    # Find the best score by taking the maximum value
     best_match = score_matrix.loc[score_matrix.groupby("index")["value"].idxmax()].reset_index(drop=True)
     
+    #Add in the ground truths that were not matched
     missing_gt = set(ground_truth.index) - set(best_match["variable"].unique())
     missing_gt = pd.DataFrame({"index": None, "variable": list(missing_gt), "value": 0})
     
-    # TODO: fix case when there are multiple comedians
-    return best_match.append(missing_gt).groupby("variable").mean().rename(columns={"value": "score"})
+    result = best_match.append(missing_gt).groupby("variable").mean().rename(columns={"value": "score"})
     
+    # Add in the comedians and group by the mean for each comedian
+    final_result = result.merge(ground_truth[['comedian']], left_index=True, right_index=True).reset_index(drop=True)
+    
+    return final_result.groupby('comedian')['score'].mean().reset_index()
