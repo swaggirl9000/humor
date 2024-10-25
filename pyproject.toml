@@ -12,5 +12,6 @@ dependencies = [
     "ipywidgets>=8.1.5",
     "pandas>=2.2.3",
     "papermill>=2.6.0",
+    "pydantic>=2.9.2",
     "transformers>=4.45.2",
 ]
