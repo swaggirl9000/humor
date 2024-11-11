@@ -22,8 +22,8 @@ def bipartite_metric(model_answers: pd.DataFrame, ground_truth: pd.DataFrame):
     missing_gt = set(ground_truth.index) - set(best_match["variable"].unique())
     missing_gt = pd.DataFrame({"index": None, "variable": list(missing_gt), "value": 0})
     
-    result = best_match.append(missing_gt).groupby("variable").mean().rename(columns={"value": "score"})
-    
+    result = pd.concat([best_match, missing_gt]).groupby("variable").mean().rename(columns={"value": "score"})
+        
     # Calculate penalty for over generation 
     over_generation_penalty = len(model_answers) - len(ground_truth)
     penalty_factor = max(over_generation_penalty, 0)  
