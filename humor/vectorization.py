@@ -7,9 +7,6 @@ from torch import Tensor
 from pydantic import BaseModel
 from ..linalg import symsqrtinv
 
-"I am funny" -> ["I", "am", "funny"] -> [3321, 132354, 2453]
-
-
 class LinearUnembeddingRepresentation(BaseModel, arbitrary_types_allowed=True):
     """
     Basic manipulation of linear unembedding representations from a HuggingFace model.
