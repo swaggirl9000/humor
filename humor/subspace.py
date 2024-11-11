@@ -9,7 +9,7 @@ def get_gt_representation(batch_of_strs: list, subspace_size: int = 8) -> torch.
     *_, subs_repr = torch.pca_lowrank(U[inputs["input_ids"]], q=subspace_size)
     return subs_repr
 
-#Get subspacw representation of model's output
+#Get subspace representation of model's output
 def get_output_representation(model, tokenizer, batch_of_strs: list, number_of_tokens: int = 128, subspace_size: int = 8) -> torch.Tensor:
     inputs = tokenizer(batch_of_strs, return_tensors="pt", padding=True, truncation=False).to(model.device)
     
